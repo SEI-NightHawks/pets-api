@@ -1,0 +1,3 @@
+CREATE DATABASE pets_api;
+
+CREATE USER pet_admin SUPERUSER;
