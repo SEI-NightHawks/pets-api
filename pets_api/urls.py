@@ -16,17 +16,33 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from rest_framework import routers
-from pets.views import PetViewSet, PostViewSet, CommentViewSet, FollowingViewSet, LikeViewSet
-
-router = routers.DefaultRouter()
-router.register(r'pet', PetViewSet)
-router.register(r'posts', PostViewSet)
-router.register(r'comments', CommentViewSet)
-router.register(r'following', FollowingViewSet)
-router.register(r'likes', LikeViewSet)
 
 urlpatterns = [
-    path('', include(router.urls)),
-    path('admin/', admin.site.urls)
+    path('admin/', admin.site.urls),
+    path('api/', include('pets.urls'))
 ]
+
+# from django.urls import path
+# from .views import CreateUserView, LoginView, PetList, PetDetail, PostDetail, PostList, FollowingDetail, FollowingList, CommentDetail, CommentList, LikeDetail, LikeList 
+
+# urlpatterns = [
+#   # User routes
+#   path('users/register/', CreateUserView.as_view(), name='register'),
+#   path('users/login/', LoginView.as_view(), name='login'),
+
+#   # Other routes
+# #   path('pets/', PetList.as_view(), name='pet-list'),  # List all blogs and create a blog
+# #   path('pets/<int:pk>/', PetDetail.as_view(), name='pet-detail'),  # Retrieve, update, and delete a specific blog
+
+#   path('posts/', PostList.as_view(), name='post-list'),  # List all comments and create a comment
+#   path('posts/<int:pk>/', PostDetail.as_view(), name='post-detail'),  # Update and delete a specific comment
+  
+#   path('followings/', FollowingList.as_view(), name='following-list'),  # List all comments and create a comment
+#   path('followings/<int:pk>/', FollowingDetail.as_view(), name='following-detail'),  # Update and delete a specific comment
+  
+#   path('comments/', CommentList.as_view(), name='comment-list'),  # List all comments and create a comment
+#   path('comments/<int:pk>/', CommentDetail.as_view(), name='comment-detail'),  # Update and delete a specific comment
+  
+#   path('likes/', LikeList.as_view(), name='like-list'),  # List all comments and create a comment
+#   path('likes/<int:pk>/', LikeDetail.as_view(), name='like-detail'),  # Update and delete a specific comment
+# ]
