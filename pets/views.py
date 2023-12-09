@@ -65,7 +65,7 @@ class UserPetsView(generics.ListAPIView):
 class PetViewSet(viewsets.ModelViewSet):
     queryset = Pet.objects.all()
     serializer_class = PetSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.AllowAny]
 
 class PostViewSet(viewsets.ModelViewSet): 
     queryset = Post.objects.all()
