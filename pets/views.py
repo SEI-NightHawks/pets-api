@@ -98,19 +98,9 @@ class LikeViewSet(viewsets.ModelViewSet):
 
 # Post Views (with protected POST route; requires token in header)
 class PostList(generics.ListCreateAPIView):
-    queryset = Post.objects.all()
     serializer_class = PostSerializer
 
-    # Define permission classes based on action
-    def get_permissions(self):
-        if self.request.method == 'POST':
-            # Require authentication for POST requests (blog creation)
-            permission_classes = [IsAuthenticated]
-        else:
-            # Allow any access for GET requests (blog listing)
-            permission_classes = [AllowAny]
-        return [permission() for permission in permission_classes]
-
-    # Override the perform_create method to set the author as the user's profile
-    def perform_create(self, serializer):
-        serializer.save(author=self.request.user.profile)
+    def get_queryset(self):
+        pet_id = self.kwargs.get('pet_id')
+        queryset = Post.objects.filter(pet=pet_id)
+        return queryset
