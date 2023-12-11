@@ -41,6 +41,20 @@ class LoginView(APIView):
             })
         return Response({'error': 'Invalid Credentials'}, status=status.HTTP_401_UNAUTHORIZED)
 
+
+class VerifyUserView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        user = User.objects.get(username=request.user)  # Fetch user profile
+        refresh = RefreshToken.for_user(request.user)  # Generate new refresh token
+        return Response({
+            'refresh': str(refresh),
+            'access': str(refresh.access_token),
+            'user': UserSerializer(user).data
+        })
+
+
 class IsPetOwnerOrReadOnly(permissions.BasePermission):
     """
     Custom permission to only allow owners of the associated pet to edit the post.

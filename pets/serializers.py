@@ -23,8 +23,21 @@ class PetSerializer(serializers.ModelSerializer):
         validated_data['owner'] = self.context['request'].user
         return super(PetSerializer, self).create(validated_data)
 
+# class PostSerializer(serializers.ModelSerializer):
+#     pet = serializers.PrimaryKeyRelatedField(queryset=Pet.objects.all())
+
+#     class Meta:
+#         model = Post
+#         fields = '__all__'
+
 class PostSerializer(serializers.ModelSerializer):
     pet = serializers.PrimaryKeyRelatedField(queryset=Pet.objects.all())
+
+    def to_representation(self, instance):
+        representation = super(PostSerializer, self).to_representation(instance)
+        pet_data = PetSerializer(instance.pet).data  # Assuming you have a PetSerializer defined
+        representation['pet'] = pet_data
+        return representation
 
     class Meta:
         model = Post
