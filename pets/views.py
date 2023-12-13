@@ -41,6 +41,20 @@ class LoginView(APIView):
             })
         return Response({'error': 'Invalid Credentials'}, status=status.HTTP_401_UNAUTHORIZED)
 
+
+class VerifyUserView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        user = User.objects.get(username=request.user)  # Fetch user profile
+        refresh = RefreshToken.for_user(request.user)  # Generate new refresh token
+        return Response({
+            'refresh': str(refresh),
+            'access': str(refresh.access_token),
+            'user': UserSerializer(user).data
+        })
+
+
 class IsPetOwnerOrReadOnly(permissions.BasePermission):
     """
     Custom permission to only allow owners of the associated pet to edit the post.
@@ -98,19 +112,26 @@ class LikeViewSet(viewsets.ModelViewSet):
 
 # Post Views (with protected POST route; requires token in header)
 class PostList(generics.ListCreateAPIView):
-    queryset = Post.objects.all()
     serializer_class = PostSerializer
 
-    # Define permission classes based on action
-    def get_permissions(self):
-        if self.request.method == 'POST':
-            # Require authentication for POST requests (blog creation)
-            permission_classes = [IsAuthenticated]
-        else:
-            # Allow any access for GET requests (blog listing)
-            permission_classes = [AllowAny]
-        return [permission() for permission in permission_classes]
+    def get_queryset(self):
+        pet_id = self.kwargs.get('pet_id')
+        queryset = Post.objects.filter(pet=pet_id)
+        return queryset
+    
+class DeleteUserView(APIView):
+    permission_classes = [IsAuthenticated]  
 
-    # Override the perform_create method to set the author as the user's profile
-    def perform_create(self, serializer):
-        serializer.save(author=self.request.user.profile)
+    def delete(self, request, user_id):
+        try:
+            user = User.objects.get(id=user_id)
+            if user != request.user and not request.user.is_superuser:
+                return Response({'error': 'You do not have permission to delete this user.'}, status=status.HTTP_403_FORBIDDEN)
+                
+            Pet.objects.filter(owner=user).delete()
+            user.delete()
+
+            return Response({'message': 'User and associated pets deleted successfully.'}, status=status.HTTP_204_NO_CONTENT)
+        except User.DoesNotExist:
+            return Response({'error': 'User not found.'}, status=status.HTTP_404_NOT_FOUND)
+

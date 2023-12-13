@@ -1,5 +1,5 @@
 from django.urls import path, include
-from .views import CreateUserView, LoginView, UserPetsView, PetViewSet, PostViewSet, CommentViewSet, FollowingViewSet, LikeViewSet
+from .views import CreateUserView, DeleteUserView, LoginView, VerifyUserView, UserPetsView, PetViewSet, PostList, PostViewSet, CommentViewSet, FollowingViewSet, LikeViewSet
 from rest_framework.routers import DefaultRouter
 
 router = DefaultRouter()
@@ -13,6 +13,9 @@ router.register(r'likes', LikeViewSet, basename='like')
 urlpatterns = [
     path('users/register/', CreateUserView.as_view(), name='register'),
     path('users/login/', LoginView.as_view(), name='login'),
-    path('user/pets/', UserPetsView.as_view(), name='user-pets'),  # New URL pattern
+    path('users/verify/', VerifyUserView.as_view(), name='verify_user'),
+    path('user/pets/', UserPetsView.as_view(), name='user-pets'),  
+    path('pet/<int:pet_id>/posts/', PostList.as_view(), name='pet_posts'),
+    path('users/delete/<int:user_id>/', DeleteUserView.as_view(), name='delete_user'),
     path('', include(router.urls)),  # Include the router.urls for the other views
 ]
