@@ -1,0 +1,1 @@
+web: gunicorn pets_api.wsgi
