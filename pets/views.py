@@ -127,7 +127,7 @@ class DeleteUserView(APIView):
             user = User.objects.get(id=user_id)
             if user != request.user and not request.user.is_superuser:
                 return Response({'error': 'You do not have permission to delete this user.'}, status=status.HTTP_403_FORBIDDEN)
-            
+                
             Pet.objects.filter(owner=user).delete()
             user.delete()
 

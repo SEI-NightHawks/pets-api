@@ -15,7 +15,8 @@ class Pet(models.Model):
     age = models.IntegerField()
     owner = models.ForeignKey(User, on_delete=models.CASCADE)
     profile_img = models.URLField(max_length=600)
-    gender = models.CharField(choices=GENDER_CHOICES, null=True, blank=True)  
+    gender = models.CharField(choices=GENDER_CHOICES, null=True, blank=True) 
+    bio = models.CharField(max_length=600, blank=True) 
 
     def __str__(self):
         return f'{self.name} - {self.breed}'
