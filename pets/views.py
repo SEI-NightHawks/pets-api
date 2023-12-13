@@ -118,3 +118,20 @@ class PostList(generics.ListCreateAPIView):
         pet_id = self.kwargs.get('pet_id')
         queryset = Post.objects.filter(pet=pet_id)
         return queryset
+    
+class DeleteUserView(APIView):
+    permission_classes = [IsAuthenticated]  
+
+    def delete(self, request, user_id):
+        try:
+            user = User.objects.get(id=user_id)
+            if user != request.user and not request.user.is_superuser:
+                return Response({'error': 'You do not have permission to delete this user.'}, status=status.HTTP_403_FORBIDDEN)
+            
+            Pet.objects.filter(owner=user).delete()
+            user.delete()
+
+            return Response({'message': 'User and associated pets deleted successfully.'}, status=status.HTTP_204_NO_CONTENT)
+        except User.DoesNotExist:
+            return Response({'error': 'User not found.'}, status=status.HTTP_404_NOT_FOUND)
+
