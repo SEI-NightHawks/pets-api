@@ -27,7 +27,7 @@ SECRET_KEY = 'django-insecure-le_$y!rd*3$a^4z#0*@0%-!d956@t%_2m10@ti%(v&vkejn)pc
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['https://onlypets-api-6c2ffb07f9e5.herokuapp.com/', 'onlypets-api-6c2ffb07f9e5.herokuapp.com']
+ALLOWED_HOSTS = ['https://onlypets-api-6c2ffb07f9e5.herokuapp.com/', 'onlypets-api-6c2ffb07f9e5.herokuapp.com', '127.0.0.1']
 
 # Application definition
 
@@ -58,6 +58,7 @@ MIDDLEWARE = [
 
 CORS_ALLOWED_ORIGINS = [
     'http://localhost:3000',
+    'https://only-pets.netlify.app'
 ]
 
 REST_FRAMEWORK = {
