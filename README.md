@@ -9,7 +9,7 @@ OnlyPets is a Pet social media site, similar to instagram, where a User can sign
 ```
 Python 3
 pip (Python package manager)
-Virtual environment (recommended for Python package management))
+Virtual environment (recommended for Python package management)
 
 ```
 
