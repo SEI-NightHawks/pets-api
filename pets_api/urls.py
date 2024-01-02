@@ -46,3 +46,4 @@ urlpatterns = [
 #   path('likes/', LikeList.as_view(), name='like-list'),  # List all comments and create a comment
 #   path('likes/<int:pk>/', LikeDetail.as_view(), name='like-detail'),  # Update and delete a specific comment
 # ]
+#
